@@ -286,7 +286,7 @@ export default function MaltaEssay() {
           </p>
         </div>
 
-        <div style={{ ...CONTAINER, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
+        <div className="malta-sea-grid" style={{ ...CONTAINER, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
           {/* Left — Image */}
           <div>
             <img
