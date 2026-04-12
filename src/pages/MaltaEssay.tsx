@@ -73,7 +73,7 @@ function InfoCard({ title, children, accent }: { title?: string; children: React
       borderRadius: 3,
       padding: "24px 28px",
       marginBottom: 16,
-      borderLeft: accent ? "3px solid #cc2222" : "1px solid #1a1a1a",
+      borderLeft: accent ? "3px solid #c4993a" : "1px solid #1a1a1a",
     }}>
       {title && (
         <h3 style={{
@@ -165,7 +165,7 @@ function FactBox({ label, value }: { label: string; value: string }) {
       background: "#0a0a0a", border: "1px solid #1a1a1a", borderRadius: 2,
       padding: "16px 20px", textAlign: "center", flex: 1, minWidth: 160,
     }}>
-      <div style={{ fontFamily: S.heading, fontSize: "1.3rem", color: "#cc2222", fontWeight: 300 }}>{value}</div>
+      <div style={{ fontFamily: S.heading, fontSize: "1.3rem", color: "#c4993a", fontWeight: 300 }}>{value}</div>
       <div style={{ fontFamily: S.body, fontSize: 10, color: "#555", textTransform: "uppercase", letterSpacing: "0.15em", marginTop: 6 }}>{label}</div>
     </div>
   );
@@ -209,7 +209,7 @@ function MaltaMap() {
 
     const icon = L.divIcon({
       className: "",
-      html: '<div style="width:12px;height:12px;border-radius:50%;background:#cc2222;border:1px solid #ff4444;"></div>',
+      html: '<div style="width:12px;height:12px;border-radius:50%;background:#c4993a;border:1px solid #dab054;"></div>',
       iconSize: [12, 12],
       iconAnchor: [6, 6],
     });
@@ -396,8 +396,8 @@ export default function MaltaEssay() {
               <AreaChart data={SEA_LEVEL_DATA} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
                 <defs>
                   <linearGradient id="seaFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#cc2222" stopOpacity={0.3} />
-                    <stop offset="100%" stopColor="#cc2222" stopOpacity={0.02} />
+                    <stop offset="0%" stopColor="#c4993a" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="#c4993a" stopOpacity={0.02} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1a2a44" />
@@ -408,10 +408,10 @@ export default function MaltaEssay() {
                 <Tooltip
                   contentStyle={{ background: "#0d1b30", border: "1px solid #1a2a44", borderRadius: 3, fontFamily: S.body, fontSize: 12 }}
                   labelStyle={{ color: "#6b8ab5" }}
-                  itemStyle={{ color: "#cc2222" }}
+                  itemStyle={{ color: "#c4993a" }}
                   formatter={(value: number) => [`${value} m`, "Nivel"]}
                 />
-                <Area type="monotone" dataKey="level" stroke="#cc2222" strokeWidth={2} fill="url(#seaFill)" dot={false} />
+                <Area type="monotone" dataKey="level" stroke="#c4993a" strokeWidth={2} fill="url(#seaFill)" dot={false} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -428,7 +428,7 @@ export default function MaltaEssay() {
               background: "#0d1b30", border: "1px solid #1a2a44", borderRadius: 3,
               padding: "24px 20px", textAlign: "center",
             }}>
-              <div style={{ fontSize: 20, color: "#cc2222", marginBottom: 8 }}>{c.icon}</div>
+              <div style={{ fontSize: 20, color: "#c4993a", marginBottom: 8 }}>{c.icon}</div>
               <div style={{ fontFamily: S.heading, fontSize: "1.3rem", color: "#fff", fontWeight: 300, marginBottom: 8 }}>{c.stat}</div>
               <div style={{ fontFamily: S.body, fontSize: 11, color: "#6b8ab5", lineHeight: 1.5 }}>{c.desc}</div>
             </div>
