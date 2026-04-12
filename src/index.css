@@ -124,4 +124,12 @@ All colors MUST be HSL.
   .malta-facts-grid {
     grid-template-columns: 1fr !important;
   }
+  .malta-temple-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+@media (max-width: 480px) {
+  .malta-temple-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
