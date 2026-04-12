@@ -244,6 +244,8 @@ function TempleCards() {
           date={MARKERS[lightbox].date}
           desc={MARKERS[lightbox].desc}
           onClose={() => setLightbox(null)}
+          onPrev={lightbox > 0 ? () => setLightbox(lightbox - 1) : undefined}
+          onNext={lightbox < MARKERS.length - 1 ? () => setLightbox(lightbox + 1) : undefined}
         />
       )}
     </>
