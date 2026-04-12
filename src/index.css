@@ -116,3 +116,12 @@ All colors MUST be HSL.
 .malta-popup .leaflet-popup-content {
   margin: 0;
 }
+
+@media (max-width: 768px) {
+  .malta-sea-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .malta-facts-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
