@@ -13,6 +13,7 @@ import elephantLeft from "@/assets/Elefante_izquierda.png";
 import elephantRight from "@/assets/Elefante_derecha.png";
 import diagrama from "@/assets/Diagrama.jpg";
 import mediterraneoGlacial from "@/assets/Mediterraneo_glacial.jpg";
+import heroMalta from "@/assets/hero_malta.jpg";
 import taHagratCard from "@/assets/Ta_Hagrat_card.jpg";
 import talQadiCard from "@/assets/Tal_Qadi_card.jpg";
 import ggantijaCard from "@/assets/Ggantija_card.jpg";
@@ -309,16 +310,27 @@ export default function MaltaEssay() {
   return (
     <div style={{ background: "#080808", minHeight: "100vh", fontFamily: S.body, color: "#fff" }}>
       {/* ═══ HEADER ═══ */}
-      <header style={{ textAlign: "center", padding: "80px 24px 48px", borderBottom: "0.5px solid #1a1a1a" }}>
-        <h1 style={{ fontFamily: S.title, fontSize: "3.2rem", letterSpacing: "0.04em", margin: 0, fontWeight: 300, color: "#fff" }}>
-          Malta megalítica
-        </h1>
-        <p style={{ fontFamily: S.italic, fontStyle: "italic", fontSize: "0.85rem", color: "#444", margin: "12px 0 16px", fontWeight: 300 }}>
-          La cultura más antigua de Europa
-        </p>
-        <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.3em", color: "#666", margin: 0 }}>
-          Heresy & Beauty · Visual essay
-        </p>
+      <header style={{ position: "relative", textAlign: "center", borderBottom: "0.5px solid #1a1a1a", overflow: "hidden" }}>
+        <div style={{ position: "relative", width: "100%", height: 320, overflow: "hidden" }}>
+          <img src={heroMalta} alt="Templos megalíticos de Malta" style={{
+            width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%", display: "block",
+          }} />
+          <div style={{
+            position: "absolute", inset: 0,
+            background: "linear-gradient(to bottom, rgba(8,8,8,0.3) 0%, rgba(8,8,8,0.7) 60%, #080808 100%)",
+          }} />
+        </div>
+        <div style={{ position: "relative", padding: "0 24px 48px", marginTop: -100 }}>
+          <h1 style={{ fontFamily: S.title, fontSize: "3.2rem", letterSpacing: "0.04em", margin: 0, fontWeight: 300, color: "#fff" }}>
+            Malta megalítica
+          </h1>
+          <p style={{ fontFamily: S.italic, fontStyle: "italic", fontSize: "0.85rem", color: "#999", margin: "12px 0 16px", fontWeight: 300 }}>
+            La cultura más antigua de Europa
+          </p>
+          <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.3em", color: "#666", margin: 0 }}>
+            Heresy & Beauty · Visual essay
+          </p>
+        </div>
       </header>
 
       {/* ═══ INTRO ═══ */}
