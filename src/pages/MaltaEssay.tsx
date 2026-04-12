@@ -460,9 +460,12 @@ export default function MaltaEssay() {
       <SectionTitle>Los templos del archipiélago</SectionTitle>
       <section style={{ ...CONTAINER, paddingBottom: 8 }}>
         <MaltaMap />
+        <div style={{ marginTop: 24 }}>
+          <TempleCards />
+        </div>
       </section>
 
-      {/* ═══ HAGAR QIM & MNAJDRA ═══ */}
+
       <SectionTitle>Los templos de Ħagar Qim y Mnajdra</SectionTitle>
       <section style={{ ...CONTAINER, padding: "12px 24px 20px" }}>
         <InfoCard title="Alineación solar en Mnajdra" accent>
