@@ -87,7 +87,77 @@ function InfoCard({ title, children, accent }: { title?: string; children: React
   );
 }
 
-/* ── Fact Box ── */
+/* ── Lightbox ── */
+function Lightbox({ src, name, date, desc, onClose }: { src: string; name: string; date: string; desc: string; onClose: () => void }) {
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: "fixed", inset: 0, zIndex: 9999,
+        background: "rgba(0,0,0,0.92)", display: "flex", alignItems: "center", justifyContent: "center",
+        cursor: "zoom-out", padding: 24,
+      }}
+    >
+      <div onClick={(e) => e.stopPropagation()} style={{ maxWidth: 960, width: "100%", cursor: "default" }}>
+        <img src={src} alt={name} style={{ width: "100%", maxHeight: "70vh", objectFit: "contain", display: "block", borderRadius: 4 }} />
+        <div style={{ textAlign: "center", marginTop: 16 }}>
+          <div style={{ fontFamily: S.heading, fontSize: "1.4rem", color: "#fff", fontWeight: 300 }}>{name}</div>
+          <div style={{ fontFamily: S.body, fontSize: 12, color: "#888", marginTop: 4 }}>{date}</div>
+          <div style={{ fontFamily: S.body, fontSize: 13, color: "#aaa", marginTop: 6 }}>{desc}</div>
+        </div>
+        <button onClick={onClose} style={{
+          position: "absolute", top: 24, right: 24,
+          background: "none", border: "none", color: "#666", fontSize: 28,
+          cursor: "pointer", fontFamily: S.body, lineHeight: 1,
+        }}>×</button>
+      </div>
+    </div>
+  );
+}
+
+/* ── Temple Cards Grid ── */
+function TempleCards() {
+  const [lightbox, setLightbox] = useState<number | null>(null);
+
+  return (
+    <>
+      <div className="malta-temple-grid" style={{
+        display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16,
+      }}>
+        {MARKERS.map((m, i) => (
+          <div
+            key={i}
+            onClick={() => setLightbox(i)}
+            style={{
+              background: "#0d0d0d", border: "1px solid #1a1a1a", borderRadius: 3,
+              overflow: "hidden", cursor: "zoom-in", transition: "border-color 0.2s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#333")}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#1a1a1a")}
+          >
+            <img src={m.cardImg} alt={m.name} style={{ width: "100%", height: 180, objectFit: "cover", display: "block" }} />
+            <div style={{ padding: "12px 14px" }}>
+              <div style={{ fontFamily: S.heading, fontSize: 15, color: "#fff", fontWeight: 400 }}>{m.name}</div>
+              <div style={{ fontFamily: S.body, fontSize: 11, color: "#888", marginTop: 3 }}>{m.date}</div>
+              <div style={{ fontFamily: S.body, fontSize: 11, color: "#666", marginTop: 4 }}>{m.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      {lightbox !== null && (
+        <Lightbox
+          src={MARKERS[lightbox].cardImg}
+          name={MARKERS[lightbox].name}
+          date={MARKERS[lightbox].date}
+          desc={MARKERS[lightbox].desc}
+          onClose={() => setLightbox(null)}
+        />
+      )}
+    </>
+  );
+}
+
+
 function FactBox({ label, value }: { label: string; value: string }) {
   return (
     <div style={{
