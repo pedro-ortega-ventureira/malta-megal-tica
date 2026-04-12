@@ -202,7 +202,16 @@ function MaltaMap() {
 
   useEffect(() => {
     if (!mapRef.current) return;
-    const map = L.map(mapRef.current, { zoomControl: false }).setView([35.95, 14.37], 11);
+    const map = L.map(mapRef.current, { zoomControl: false, scrollWheelZoom: false, dragging: false }).setView([35.95, 14.37], 11);
+
+    const enableInteraction = () => { map.scrollWheelZoom.enable(); map.dragging.enable(); };
+    const disableInteraction = () => { map.scrollWheelZoom.disable(); map.dragging.disable(); };
+
+    const onKeyDown = (e: KeyboardEvent) => { if (e.ctrlKey || e.metaKey) enableInteraction(); };
+    const onKeyUp = () => disableInteraction();
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keyup", onKeyUp);
+    const cleanup = () => { window.removeEventListener("keydown", onKeyDown); window.removeEventListener("keyup", onKeyUp); };
     L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
       attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
     }).addTo(map);
