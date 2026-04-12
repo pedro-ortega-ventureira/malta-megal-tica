@@ -88,26 +88,90 @@ function InfoCard({ title, children, accent }: { title?: string; children: React
   );
 }
 
-/* ── Lightbox ── */
+/* ── Lightbox with pan & zoom ── */
 function Lightbox({ src, name, date, desc, onClose }: { src: string; name: string; date: string; desc: string; onClose: () => void }) {
+  const [scale, setScale] = useState(1);
+  const [translate, setTranslate] = useState({ x: 0, y: 0 });
+  const dragging = useRef(false);
+  const lastPos = useRef({ x: 0, y: 0 });
+
+  const handleWheel = useCallback((e: React.WheelEvent) => {
+    e.stopPropagation();
+    setScale((s) => Math.max(0.5, Math.min(5, s - e.deltaY * 0.002)));
+  }, []);
+
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
+    if (scale <= 1) return;
+    dragging.current = true;
+    lastPos.current = { x: e.clientX, y: e.clientY };
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  }, [scale]);
+
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    if (!dragging.current) return;
+    setTranslate((t) => ({
+      x: t.x + e.clientX - lastPos.current.x,
+      y: t.y + e.clientY - lastPos.current.y,
+    }));
+    lastPos.current = { x: e.clientX, y: e.clientY };
+  }, []);
+
+  const onPointerUp = useCallback(() => { dragging.current = false; }, []);
+
+  const resetView = useCallback(() => { setScale(1); setTranslate({ x: 0, y: 0 }); }, []);
+
   return (
     <div
       onClick={onClose}
       style={{
         position: "fixed", inset: 0, zIndex: 9999,
-        background: "rgba(0,0,0,0.92)", display: "flex", alignItems: "center", justifyContent: "center",
-        cursor: "zoom-out", padding: 24,
+        background: "rgba(0,0,0,0.92)", display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        cursor: scale > 1 ? "grab" : "zoom-out", padding: 24,
       }}
     >
-      <div onClick={(e) => e.stopPropagation()} style={{ maxWidth: 960, width: "100%", cursor: "default" }}>
-        <img src={src} alt={name} style={{ width: "100%", maxHeight: "70vh", objectFit: "contain", display: "block", borderRadius: 4 }} />
-        <div style={{ textAlign: "center", marginTop: 16 }}>
+      <div onClick={(e) => e.stopPropagation()} style={{ maxWidth: 960, width: "100%", cursor: "default", position: "relative" }}>
+        {/* Image container */}
+        <div
+          style={{ overflow: "hidden", borderRadius: 4, cursor: dragging.current ? "grabbing" : scale > 1 ? "grab" : "default" }}
+          onWheel={handleWheel}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+        >
+          <img
+            src={src} alt={name} draggable={false}
+            style={{
+              width: "100%", maxHeight: "70vh", objectFit: "contain", display: "block",
+              transform: `scale(${scale}) translate(${translate.x / scale}px, ${translate.y / scale}px)`,
+              transition: dragging.current ? "none" : "transform 0.15s ease-out",
+            }}
+          />
+        </div>
+
+        {/* Zoom controls */}
+        <div style={{ display: "flex", gap: 8, justifyContent: "center", marginTop: 12 }}>
+          {[
+            { label: "−", action: () => setScale((s) => Math.max(0.5, s - 0.3)) },
+            { label: `${Math.round(scale * 100)}%`, action: resetView },
+            { label: "+", action: () => setScale((s) => Math.min(5, s + 0.3)) },
+          ].map((b, i) => (
+            <button key={i} onClick={b.action} style={{
+              background: "#1a1a1a", border: "1px solid #333", borderRadius: 3,
+              color: "#aaa", fontFamily: S.body, fontSize: 13, padding: "4px 12px",
+              cursor: "pointer", minWidth: i === 1 ? 60 : 32,
+            }}>{b.label}</button>
+          ))}
+        </div>
+
+        {/* Info */}
+        <div style={{ textAlign: "center", marginTop: 12 }}>
           <div style={{ fontFamily: S.heading, fontSize: "1.4rem", color: "#fff", fontWeight: 300 }}>{name}</div>
           <div style={{ fontFamily: S.body, fontSize: 12, color: "#888", marginTop: 4 }}>{date}</div>
           <div style={{ fontFamily: S.body, fontSize: 13, color: "#aaa", marginTop: 6 }}>{desc}</div>
         </div>
         <button onClick={onClose} style={{
-          position: "absolute", top: 24, right: 24,
+          position: "absolute", top: -8, right: -8,
           background: "none", border: "none", color: "#666", fontSize: 28,
           cursor: "pointer", fontFamily: S.body, lineHeight: 1,
         }}>×</button>
