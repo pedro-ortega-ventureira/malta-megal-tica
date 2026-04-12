@@ -46,12 +46,12 @@ const SEA_LEVEL_DATA = [
 ];
 
 const MARKERS = [
-  { name: "Ta' Ħaġrat", lat: 35.9103, lng: 14.3697, img: taHagratImg, date: "4500 AC", desc: "El templo más antiguo de Europa" },
-  { name: "Tal-Qadi", lat: 35.9347, lng: 14.3906, img: talQadiImg, date: "~3000 AC", desc: "Piedra lunar con ocho estrellas" },
-  { name: "Ġgantija", lat: 36.0478, lng: 14.2689, img: ggantija, date: "3600 AC — Gozo", desc: "Los megalitos erguidos más altos" },
-  { name: "Ħagar Qim", lat: 35.8275, lng: 14.4420, img: hagarQim, date: "~3000 AC", desc: "Alineación solar en solsticio de verano" },
-  { name: "Hal Saflieni", lat: 35.8736, lng: 14.5022, img: halSaflieni, date: "4000 AC", desc: "Único hipogeo prehistórico conocido" },
-  { name: "Mnajdra", lat: 35.8267, lng: 14.4358, img: mnajdra, date: "~3000 AC", desc: "Arqueoastronomía: solsticios y equinoccios" },
+  { name: "Ta' Ħaġrat", lat: 35.9103, lng: 14.3697, img: taHagratImg, cardImg: taHagratCard, date: "4500 AC", desc: "El templo más antiguo de Europa" },
+  { name: "Tal-Qadi", lat: 35.9347, lng: 14.3906, img: talQadiImg, cardImg: talQadiCard, date: "~3000 AC", desc: "Piedra lunar con ocho estrellas" },
+  { name: "Ġgantija", lat: 36.0478, lng: 14.2689, img: ggantija, cardImg: ggantijaCard, date: "3600 AC — Gozo", desc: "Los megalitos erguidos más altos" },
+  { name: "Ħagar Qim", lat: 35.8275, lng: 14.4420, img: hagarQim, cardImg: hagarQimCard, date: "~3000 AC", desc: "Alineación solar en solsticio de verano" },
+  { name: "Hal Saflieni", lat: 35.8736, lng: 14.5022, img: halSaflieni, cardImg: halSaflieniCard, date: "4000 AC", desc: "Único hipogeo prehistórico conocido" },
+  { name: "Mnajdra", lat: 35.8267, lng: 14.4358, img: mnajdra, cardImg: mnajdraCard, date: "~3000 AC", desc: "Arqueoastronomía: solsticios y equinoccios" },
 ];
 
 const S = {
