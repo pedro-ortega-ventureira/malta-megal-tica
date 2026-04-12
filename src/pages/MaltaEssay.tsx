@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, ReferenceArea } from "recharts";
 
 import taHagratImg from "@/assets/Ta__Hag_rat.jpg";
 import talQadiImg from "@/assets/Tal-Qadi.jpg";
@@ -11,6 +12,32 @@ import mnajdra from "@/assets/Mnajdra.jpg";
 import elephantLeft from "@/assets/Elefante_izquierda.png";
 import elephantRight from "@/assets/Elefante_derecha.png";
 import diagrama from "@/assets/Diagrama.jpg";
+import mediterraneoGlacial from "@/assets/Mediterraneo_glacial.jpg";
+
+const SEA_LEVEL_DATA = [
+  { year: "20000 a.C.", level: -120, raw: -20000 },
+  { year: "17000 a.C.", level: -100, raw: -17000 },
+  { year: "14000 a.C.", level: -80, raw: -14000 },
+  { year: "12000 a.C.", level: -58, raw: -12000 },
+  { year: "10000 a.C.", level: -35, raw: -10000 },
+  { year: "8000 a.C.", level: -18, raw: -8000 },
+  { year: "7000 a.C.", level: -10, raw: -7000 },
+  { year: "6000 a.C.", level: -5, raw: -6000 },
+  { year: "4000 a.C.", level: -2, raw: -4000 },
+  { year: "2000 a.C.", level: -1, raw: -2000 },
+  { year: "0", level: -0.5, raw: 0 },
+  { year: "500", level: -0.3, raw: 500 },
+  { year: "1000", level: -0.3, raw: 1000 },
+  { year: "1500", level: -0.15, raw: 1500 },
+  { year: "1700", level: -0.1, raw: 1700 },
+  { year: "1850", level: -0.05, raw: 1850 },
+  { year: "1900", level: 0, raw: 1900 },
+  { year: "1950", level: 0.06, raw: 1950 },
+  { year: "1980", level: 0.1, raw: 1980 },
+  { year: "2000", level: 0.18, raw: 2000 },
+  { year: "2010", level: 0.23, raw: 2010 },
+  { year: "2026", level: 0.30, raw: 2026 },
+];
 
 const MARKERS = [
   { name: "Ta' Ħaġrat", lat: 35.9103, lng: 14.3697, img: taHagratImg, date: "4500 AC", desc: "El templo más antiguo de Europa" },
@@ -248,7 +275,80 @@ export default function MaltaEssay() {
         </Pullquote>
       </section>
 
-      {/* ═══ ELEPHANT SLIDER ═══ */}
+      {/* ═══ MEDITERRANEAN SEA LEVEL ═══ */}
+      <section style={{ background: "#0a1628", padding: "64px 0", marginTop: 8 }}>
+        <div style={{ textAlign: "center", padding: "0 24px", marginBottom: 40 }}>
+          <h2 style={{ fontFamily: S.heading, fontSize: "2rem", fontWeight: 300, color: "#fff", margin: "0 0 14px", letterSpacing: "0.03em" }}>
+            El Mediterráneo que no vemos
+          </h2>
+          <p style={{ fontFamily: S.body, fontSize: 14, color: "#6b8ab5", maxWidth: 600, margin: "0 auto", lineHeight: 1.7 }}>
+            Hace 20.000 años el nivel del mar estaba 120 metros más bajo. Malta era una península unida a Sicilia.
+          </p>
+        </div>
+
+        <div className="malta-sea-grid" style={{ ...CONTAINER, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
+          {/* Left — Image */}
+          <div>
+            <img
+              src={mediterraneoGlacial}
+              alt="Mediterráneo durante el último máximo glacial"
+              style={{ width: "100%", borderRadius: 4, border: "1px solid #1a2a44", display: "block" }}
+            />
+            <p style={{ fontFamily: S.body, fontSize: 10, color: "#4a6a8a", marginTop: 10, lineHeight: 1.6, fontStyle: "italic" }}>
+              Recreación del Mediterráneo durante el último máximo glacial. Las zonas ocres eran tierra firme.
+            </p>
+          </div>
+
+          {/* Right — Chart */}
+          <div style={{ background: "#0d1b30", border: "1px solid #1a2a44", borderRadius: 4, padding: "20px 16px 12px" }}>
+            <p style={{ fontFamily: S.body, fontSize: 11, color: "#6b8ab5", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 16, textAlign: "center" }}>
+              Nivel del mar — últimos 22.000 años
+            </p>
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={SEA_LEVEL_DATA} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
+                <defs>
+                  <linearGradient id="seaFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#cc2222" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="#cc2222" stopOpacity={0.02} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#1a2a44" />
+                <ReferenceArea x1="20000 a.C." x2="7000 a.C." fill="#1a3a5a" fillOpacity={0.3} />
+                <ReferenceLine y={0} stroke="#4a6a8a" strokeDasharray="6 4" label={{ value: "nivel actual", fill: "#6b8ab5", fontSize: 10, position: "right" }} />
+                <XAxis dataKey="year" tick={{ fill: "#4a6a8a", fontSize: 9 }} axisLine={{ stroke: "#1a2a44" }} tickLine={false} interval={3} />
+                <YAxis tick={{ fill: "#4a6a8a", fontSize: 10 }} axisLine={{ stroke: "#1a2a44" }} tickLine={false} unit=" m" domain={[-130, 10]} />
+                <Tooltip
+                  contentStyle={{ background: "#0d1b30", border: "1px solid #1a2a44", borderRadius: 3, fontFamily: S.body, fontSize: 12 }}
+                  labelStyle={{ color: "#6b8ab5" }}
+                  itemStyle={{ color: "#cc2222" }}
+                  formatter={(value: number) => [`${value} m`, "Nivel"]}
+                />
+                <Area type="monotone" dataKey="level" stroke="#cc2222" strokeWidth={2} fill="url(#seaFill)" dot={false} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Fact cards */}
+        <div className="malta-facts-grid" style={{ ...CONTAINER, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 32 }}>
+          {[
+            { stat: "−120 m", desc: "Nivel en el último máximo glacial (20.000 a.C.)", icon: "▼" },
+            { stat: "Malta–Sicilia", desc: "Estaban unidas por tierra firme", icon: "◆" },
+            { stat: "+20 cm", desc: "Subida del nivel del mar desde 1900", icon: "▲" },
+          ].map((c, i) => (
+            <div key={i} style={{
+              background: "#0d1b30", border: "1px solid #1a2a44", borderRadius: 3,
+              padding: "24px 20px", textAlign: "center",
+            }}>
+              <div style={{ fontSize: 20, color: "#cc2222", marginBottom: 8 }}>{c.icon}</div>
+              <div style={{ fontFamily: S.heading, fontSize: "1.3rem", color: "#fff", fontWeight: 300, marginBottom: 8 }}>{c.stat}</div>
+              <div style={{ fontFamily: S.body, fontSize: 11, color: "#6b8ab5", lineHeight: 1.5 }}>{c.desc}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+
       <SectionTitle>El elefante enano de Malta</SectionTitle>
       <section style={{ ...CONTAINER, paddingBottom: 8 }}>
         <ElephantSlider />
