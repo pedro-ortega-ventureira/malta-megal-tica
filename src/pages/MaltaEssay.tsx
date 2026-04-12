@@ -430,8 +430,11 @@ export default function MaltaEssay() {
           <p style={{ fontFamily: S.italic, fontStyle: "italic", fontSize: "0.85rem", color: "#999", margin: "12px 0 16px", fontWeight: 300 }}>
             La cultura más antigua de Europa
           </p>
-          <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.3em", color: "#666", margin: 0 }}>
+          <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.3em", color: "#666", margin: "0 0 12px" }}>
             Heresy & Beauty · Visual essay
+          </p>
+          <p style={{ fontFamily: S.italic, fontStyle: "italic", fontSize: "0.75rem", color: "#555", margin: 0, fontWeight: 300 }}>
+            Por Pedro Ortega Ventureira
           </p>
         </div>
       </header>
