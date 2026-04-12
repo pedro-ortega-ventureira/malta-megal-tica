@@ -330,7 +330,7 @@ export default function MaltaEssay() {
         </div>
 
         {/* Fact cards */}
-        <div style={{ ...CONTAINER, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 32 }}>
+        <div className="malta-facts-grid" style={{ ...CONTAINER, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 32 }}>
           {[
             { stat: "−120 m", desc: "Nivel en el último máximo glacial (20.000 a.C.)", icon: "▼" },
             { stat: "Malta–Sicilia", desc: "Estaban unidas por tierra firme", icon: "◆" },
