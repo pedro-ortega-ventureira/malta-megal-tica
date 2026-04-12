@@ -89,7 +89,7 @@ function InfoCard({ title, children, accent }: { title?: string; children: React
 }
 
 /* ── Lightbox with pan & zoom ── */
-function Lightbox({ src, name, date, desc, onClose }: { src: string; name: string; date: string; desc: string; onClose: () => void }) {
+function Lightbox({ src, name, date, desc, onClose, onPrev, onNext }: { src: string; name: string; date: string; desc: string; onClose: () => void; onPrev?: () => void; onNext?: () => void }) {
   const [scale, setScale] = useState(1);
   const [translate, setTranslate] = useState({ x: 0, y: 0 });
   const dragging = useRef(false);
@@ -120,6 +120,28 @@ function Lightbox({ src, name, date, desc, onClose }: { src: string; name: strin
 
   const resetView = useCallback(() => { setScale(1); setTranslate({ x: 0, y: 0 }); }, []);
 
+  // Reset zoom when image changes
+  useEffect(() => { resetView(); }, [src, resetView]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft" && onPrev) { onPrev(); }
+      else if (e.key === "ArrowRight" && onNext) { onNext(); }
+      else if (e.key === "Escape") { onClose(); }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onPrev, onNext, onClose]);
+
+  const arrowBtn: React.CSSProperties = {
+    position: "absolute", top: "50%", transform: "translateY(-50%)",
+    background: "rgba(20,20,20,0.7)", border: "1px solid #333", borderRadius: "50%",
+    width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center",
+    color: "#aaa", fontSize: 22, cursor: "pointer", zIndex: 10,
+    backdropFilter: "blur(4px)",
+  };
+
   return (
     <div
       onClick={onClose}
@@ -130,8 +152,16 @@ function Lightbox({ src, name, date, desc, onClose }: { src: string; name: strin
         cursor: scale > 1 ? "grab" : "zoom-out", padding: 24,
       }}
     >
+      {/* Left arrow */}
+      {onPrev && (
+        <button onClick={(e) => { e.stopPropagation(); onPrev(); }} style={{ ...arrowBtn, left: 16 }}>‹</button>
+      )}
+      {/* Right arrow */}
+      {onNext && (
+        <button onClick={(e) => { e.stopPropagation(); onNext(); }} style={{ ...arrowBtn, right: 16 }}>›</button>
+      )}
+
       <div onClick={(e) => e.stopPropagation()} style={{ maxWidth: 960, width: "100%", cursor: "default", position: "relative" }}>
-        {/* Image container */}
         <div
           style={{ overflow: "hidden", borderRadius: 4, cursor: dragging.current ? "grabbing" : scale > 1 ? "grab" : "default" }}
           onWheel={handleWheel}
@@ -149,7 +179,6 @@ function Lightbox({ src, name, date, desc, onClose }: { src: string; name: strin
           />
         </div>
 
-        {/* Zoom controls */}
         <div style={{ display: "flex", gap: 8, justifyContent: "center", marginTop: 12 }}>
           {[
             { label: "−", action: () => setScale((s) => Math.max(0.5, s - 0.3)) },
@@ -164,7 +193,6 @@ function Lightbox({ src, name, date, desc, onClose }: { src: string; name: strin
           ))}
         </div>
 
-        {/* Info */}
         <div style={{ textAlign: "center", marginTop: 12 }}>
           <div style={{ fontFamily: S.heading, fontSize: "1.4rem", color: "#fff", fontWeight: 300 }}>{name}</div>
           <div style={{ fontFamily: S.body, fontSize: 12, color: "#888", marginTop: 4 }}>{date}</div>
@@ -216,6 +244,8 @@ function TempleCards() {
           date={MARKERS[lightbox].date}
           desc={MARKERS[lightbox].desc}
           onClose={() => setLightbox(null)}
+          onPrev={lightbox > 0 ? () => setLightbox(lightbox - 1) : undefined}
+          onNext={lightbox < MARKERS.length - 1 ? () => setLightbox(lightbox + 1) : undefined}
         />
       )}
     </>
