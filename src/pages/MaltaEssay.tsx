@@ -12,6 +12,32 @@ import mnajdra from "@/assets/Mnajdra.jpg";
 import elephantLeft from "@/assets/Elefante_izquierda.png";
 import elephantRight from "@/assets/Elefante_derecha.png";
 import diagrama from "@/assets/Diagrama.jpg";
+import mediterraneoGlacial from "@/assets/Mediterraneo_glacial.jpg";
+
+const SEA_LEVEL_DATA = [
+  { year: "20000 a.C.", level: -120, raw: -20000 },
+  { year: "17000 a.C.", level: -100, raw: -17000 },
+  { year: "14000 a.C.", level: -80, raw: -14000 },
+  { year: "12000 a.C.", level: -58, raw: -12000 },
+  { year: "10000 a.C.", level: -35, raw: -10000 },
+  { year: "8000 a.C.", level: -18, raw: -8000 },
+  { year: "7000 a.C.", level: -10, raw: -7000 },
+  { year: "6000 a.C.", level: -5, raw: -6000 },
+  { year: "4000 a.C.", level: -2, raw: -4000 },
+  { year: "2000 a.C.", level: -1, raw: -2000 },
+  { year: "0", level: -0.5, raw: 0 },
+  { year: "500", level: -0.3, raw: 500 },
+  { year: "1000", level: -0.3, raw: 1000 },
+  { year: "1500", level: -0.15, raw: 1500 },
+  { year: "1700", level: -0.1, raw: 1700 },
+  { year: "1850", level: -0.05, raw: 1850 },
+  { year: "1900", level: 0, raw: 1900 },
+  { year: "1950", level: 0.06, raw: 1950 },
+  { year: "1980", level: 0.1, raw: 1980 },
+  { year: "2000", level: 0.18, raw: 2000 },
+  { year: "2010", level: 0.23, raw: 2010 },
+  { year: "2026", level: 0.30, raw: 2026 },
+];
 
 const MARKERS = [
   { name: "Ta' Ħaġrat", lat: 35.9103, lng: 14.3697, img: taHagratImg, date: "4500 AC", desc: "El templo más antiguo de Europa" },
