@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, ReferenceArea } from "recharts";
 
 import taHagratImg from "@/assets/Ta__Hag_rat.jpg";
 import talQadiImg from "@/assets/Tal-Qadi.jpg";
