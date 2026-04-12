@@ -13,6 +13,12 @@ import elephantLeft from "@/assets/Elefante_izquierda.png";
 import elephantRight from "@/assets/Elefante_derecha.png";
 import diagrama from "@/assets/Diagrama.jpg";
 import mediterraneoGlacial from "@/assets/Mediterraneo_glacial.jpg";
+import taHagratCard from "@/assets/Ta_Hagrat_card.jpg";
+import talQadiCard from "@/assets/Tal_Qadi_card.jpg";
+import ggantijaCard from "@/assets/Ggantija_card.jpg";
+import hagarQimCard from "@/assets/Hagar_Qim_card.jpg";
+import halSaflieniCard from "@/assets/Hal_Saflieni_card.jpg";
+import mnajdraCard from "@/assets/Mnajdra_card.jpg";
 
 const SEA_LEVEL_DATA = [
   { year: "20000 a.C.", level: -120, raw: -20000 },
