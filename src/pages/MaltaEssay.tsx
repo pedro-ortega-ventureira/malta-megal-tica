@@ -28,15 +28,41 @@ const S = {
   body: "'Helvetica Neue', Helvetica, Arial, sans-serif",
 };
 
-/* ── Narrative text component ── */
-function Prose({ children }: { children: React.ReactNode }) {
+const CONTAINER: React.CSSProperties = { maxWidth: 900, margin: "0 auto", padding: "0 24px" };
+
+/* ── Info Card ── */
+function InfoCard({ title, children, accent }: { title?: string; children: React.ReactNode; accent?: boolean }) {
   return (
     <div style={{
-      maxWidth: 680, margin: "0 auto", padding: "0 24px",
-      fontFamily: S.body, fontSize: 14, lineHeight: 1.85, color: "#aaa",
-      letterSpacing: "0.01em",
+      background: accent ? "#111" : "#0d0d0d",
+      border: "1px solid #1a1a1a",
+      borderRadius: 3,
+      padding: "24px 28px",
+      marginBottom: 16,
+      borderLeft: accent ? "3px solid #cc2222" : "1px solid #1a1a1a",
     }}>
-      {children}
+      {title && (
+        <h3 style={{
+          fontFamily: S.heading, fontSize: "1.1rem", color: "#ccc", fontWeight: 400,
+          margin: "0 0 10px", letterSpacing: "0.02em",
+        }}>{title}</h3>
+      )}
+      <div style={{ fontFamily: S.body, fontSize: 13, lineHeight: 1.8, color: "#888" }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/* ── Fact Box ── */
+function FactBox({ label, value }: { label: string; value: string }) {
+  return (
+    <div style={{
+      background: "#0a0a0a", border: "1px solid #1a1a1a", borderRadius: 2,
+      padding: "16px 20px", textAlign: "center", flex: 1, minWidth: 160,
+    }}>
+      <div style={{ fontFamily: S.heading, fontSize: "1.3rem", color: "#cc2222", fontWeight: 300 }}>{value}</div>
+      <div style={{ fontFamily: S.body, fontSize: 10, color: "#555", textTransform: "uppercase", letterSpacing: "0.15em", marginTop: 6 }}>{label}</div>
     </div>
   );
 }
@@ -56,8 +82,9 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 function Pullquote({ children }: { children: React.ReactNode }) {
   return (
     <blockquote style={{
-      maxWidth: 560, margin: "40px auto", padding: "0 32px",
-      borderLeft: "2px solid #333", fontFamily: S.italic, fontStyle: "italic",
+      ...CONTAINER, maxWidth: 620, padding: "0 32px",
+      margin: "32px auto", borderLeft: "2px solid #333",
+      fontFamily: S.italic, fontStyle: "italic",
       fontSize: "1.05rem", lineHeight: 1.7, color: "#777", fontWeight: 300,
     }}>
       {children}
@@ -102,10 +129,10 @@ function MaltaMap() {
     return () => { map.remove(); };
   }, []);
 
-  return <div ref={mapRef} style={{ width: "100%", height: 480 }} />;
+  return <div ref={mapRef} style={{ width: "100%", height: 480, borderRadius: 4 }} />;
 }
 
-/* ── Elephant comparison slider (fixed) ── */
+/* ── Elephant comparison slider ── */
 function ElephantSlider() {
   const [pos, setPos] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -141,63 +168,33 @@ function ElephantSlider() {
     <div
       ref={containerRef}
       style={{
-        position: "relative", width: "100%", height: 500,
+        position: "relative", width: "100%", height: 500, borderRadius: 4,
         overflow: "hidden", cursor: "ew-resize", userSelect: "none",
       }}
       onMouseDown={(e) => { dragging.current = true; updatePos(e.clientX); }}
       onTouchStart={(e) => { dragging.current = true; updatePos(e.touches[0].clientX); }}
     >
-      {/* Right image (full background) */}
-      <img
-        src={elephantRight}
-        alt="Reconstrucción"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-        draggable={false}
-      />
-      {/* Left image (clipped) */}
-      <div style={{
-        position: "absolute", inset: 0,
-        clipPath: `inset(0 ${100 - pos}% 0 0)`,
-      }}>
-        <img
-          src={elephantLeft}
-          alt="Esqueleto fósil"
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-          draggable={false}
-        />
+      <img src={elephantRight} alt="Reconstrucción" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} draggable={false} />
+      <div style={{ position: "absolute", inset: 0, clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
+        <img src={elephantLeft} alt="Esqueleto fósil" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} draggable={false} />
       </div>
-      {/* Handle line */}
       <div style={{
-        position: "absolute", top: 0, bottom: 0,
-        left: `${pos}%`, transform: "translateX(-50%)",
-        width: 2, background: "rgba(255,255,255,0.8)", zIndex: 10,
-        pointerEvents: "none",
+        position: "absolute", top: 0, bottom: 0, left: `${pos}%`, transform: "translateX(-50%)",
+        width: 2, background: "rgba(255,255,255,0.8)", zIndex: 10, pointerEvents: "none",
       }}>
         <div style={{
-          position: "absolute", top: "50%", left: "50%",
-          transform: "translate(-50%,-50%)",
-          width: 32, height: 32, borderRadius: "50%",
-          border: "2px solid rgba(255,255,255,0.9)",
-          background: "rgba(0,0,0,0.4)",
-          display: "flex", alignItems: "center", justifyContent: "center",
+          position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)",
+          width: 32, height: 32, borderRadius: "50%", border: "2px solid rgba(255,255,255,0.9)",
+          background: "rgba(0,0,0,0.4)", display: "flex", alignItems: "center", justifyContent: "center",
           backdropFilter: "blur(4px)",
         }}>
           <span style={{ color: "#fff", fontSize: 12, fontFamily: S.body, letterSpacing: 2 }}>◂▸</span>
         </div>
       </div>
-      {/* Labels */}
-      <div style={{
-        position: "absolute", bottom: 16, left: 16, fontFamily: S.body,
-        fontSize: 10, textTransform: "uppercase", letterSpacing: "0.2em", color: "#fff",
-        textShadow: "0 1px 6px rgba(0,0,0,0.9)", zIndex: 10,
-      }}>
+      <div style={{ position: "absolute", bottom: 16, left: 16, fontFamily: S.body, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.2em", color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,0.9)", zIndex: 10 }}>
         Paleoxodon falconeri — esqueleto fósil
       </div>
-      <div style={{
-        position: "absolute", bottom: 16, right: 16, fontFamily: S.body,
-        fontSize: 10, textTransform: "uppercase", letterSpacing: "0.2em", color: "#fff",
-        textShadow: "0 1px 6px rgba(0,0,0,0.9)", zIndex: 10,
-      }}>
+      <div style={{ position: "absolute", bottom: 16, right: 16, fontFamily: S.body, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.2em", color: "#fff", textShadow: "0 1px 6px rgba(0,0,0,0.9)", zIndex: 10 }}>
         Reconstrucción
       </div>
     </div>
@@ -210,158 +207,157 @@ export default function MaltaEssay() {
     <div style={{ background: "#080808", minHeight: "100vh", fontFamily: S.body, color: "#fff" }}>
       {/* ═══ HEADER ═══ */}
       <header style={{ textAlign: "center", padding: "80px 24px 48px", borderBottom: "0.5px solid #1a1a1a" }}>
-        <h1 style={{
-          fontFamily: S.title, fontSize: "3.2rem", letterSpacing: "0.04em",
-          margin: 0, fontWeight: 300, color: "#fff",
-        }}>
+        <h1 style={{ fontFamily: S.title, fontSize: "3.2rem", letterSpacing: "0.04em", margin: 0, fontWeight: 300, color: "#fff" }}>
           Malta megalítica
         </h1>
-        <p style={{
-          fontFamily: S.italic, fontStyle: "italic", fontSize: "0.85rem",
-          color: "#444", margin: "12px 0 16px", fontWeight: 300,
-        }}>
+        <p style={{ fontFamily: S.italic, fontStyle: "italic", fontSize: "0.85rem", color: "#444", margin: "12px 0 16px", fontWeight: 300 }}>
           La cultura más antigua de Europa
         </p>
-        <p style={{
-          fontSize: "0.6rem", textTransform: "uppercase",
-          letterSpacing: "0.3em", color: "#666", margin: 0,
-        }}>
+        <p style={{ fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.3em", color: "#666", margin: 0 }}>
           Heresy & Beauty · Visual essay
         </p>
       </header>
 
-      {/* ═══ INTRO NARRATIVE ═══ */}
-      <section style={{ padding: "48px 0 40px" }}>
-        <Prose>
-          <p>
-            Mucho antes de que los fenicios llegaran a la isla de Malta, la isla ya había sido cuna de otras civilizaciones. Contamos con numerosos vestigios de una cultura megalítica todavía muy desconocida, que habitó las islas del archipiélago maltés y construyó templos pétreos sin parangón, los más antiguos de toda la Europa prehistórica.
-          </p>
-          <p style={{ marginTop: 20 }}>
-            Si visitamos Malta recién entrado el otoño, nos encontraremos con un paisaje árido, repleto de colores ocres, tanto por su tierra como por sus construcciones de piedra caliza. A la vista de este escenario, hay que preguntarse por qué hallamos allí, a lo largo y ancho del archipiélago, tal cantidad de monumentos megalíticos y vestigios arqueológicos tan singulares.
-          </p>
-        </Prose>
+      {/* ═══ INTRO ═══ */}
+      <section style={{ ...CONTAINER, padding: "48px 24px 40px" }}>
+        <InfoCard>
+          <p style={{ margin: 0 }}>Mucho antes de que los fenicios llegaran a la isla de Malta, la isla ya había sido cuna de otras civilizaciones. Contamos con numerosos vestigios de una cultura megalítica todavía muy desconocida, que habitó las islas del archipiélago maltés y construyó templos pétreos sin parangón, los más antiguos de toda la Europa prehistórica.</p>
+        </InfoCard>
+
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
+          <FactBox label="Antigüedad" value="6000 AC" />
+          <FactBox label="Desaparición" value="2500 AC" />
+          <FactBox label="Templos conocidos" value="30+" />
+          <FactBox label="Anterior a Stonehenge" value="2000 años" />
+        </div>
       </section>
 
       {/* ═══ GEOLOGICAL CONTEXT ═══ */}
       <SectionTitle>Cambios geológicos en el Mediterráneo</SectionTitle>
-      <section style={{ padding: "12px 0 40px" }}>
-        <Prose>
-          <p>
-            Para empezar a establecer hipótesis, hay que volver la mirada muy atrás en el tiempo y retroceder seis millones de años. En esa época, el Mediterráneo quedó aislado del océano Atlántico y el nivel del agua descendió más de mil metros por debajo del actual. Este mar se convirtió en un gran desierto con lagos salinos en su interior. Un evento geológico posterior abrió un gran hueco en el estrecho de Gibraltar y provocó que el Mediterráneo se llenara de nuevo en menos de dos años, a un ritmo de diez metros al día.
-          </p>
-        </Prose>
+      <section style={{ ...CONTAINER, padding: "12px 24px 40px" }}>
+        <InfoCard title="La gran inundación del Mediterráneo" accent>
+          <p style={{ margin: 0 }}>Hace seis millones de años, el Mediterráneo quedó aislado del Atlántico y su nivel descendió más de mil metros. Se convirtió en un desierto con lagos salinos. Un evento geológico posterior abrió el estrecho de Gibraltar y lo llenó de nuevo en menos de dos años, a un ritmo de diez metros al día.</p>
+        </InfoCard>
+
+        <InfoCard title="Especies atrapadas">
+          <p style={{ margin: 0 }}>Durante el descenso de las aguas, Malta, Sicilia e Italia estaban conectadas, permitiendo la llegada de especies continentales. Tras la inundación, quedaron atrapadas. Lo demuestran restos de elefantes e hipopótamos enanos — <em style={{ color: "#aaa" }}>Paleoxodon mnaidriensis</em> y <em style={{ color: "#aaa" }}>Paleoxodon falconeri</em> — que, sin depredadores, redujeron su tamaño hasta apenas noventa centímetros de alto.</p>
+        </InfoCard>
+
         <Pullquote>
-          «En esa época, el Mediterráneo quedó aislado del océano Atlántico y el nivel del agua descendió más de mil metros por debajo del actual»
+          «El Mediterráneo quedó aislado del Atlántico y su nivel descendió más de mil metros por debajo del actual»
         </Pullquote>
-        <Prose>
-          <p>
-            Cabe suponer que, durante el descenso de las aguas, Malta, Sicilia y la península itálica estaban conectadas entre sí, lo cual permitía la llegada de especies provenientes del continente al archipiélago maltés. Tras la repentina inundación de la cuenca mediterránea, estas quedarían atrapadas allí. Así parecen demostrarlo restos paleontológicos, como los de elefantes e hipopótamos enanos — <em>Paleoxodon mnaidriensis</em> y <em>Paleoxodon falconeri</em> — unas especies procedentes de Asia que, al quedar atrapadas en un espacio reducido y carecer de depredadores, habrían reducido su tamaño considerablemente, llegando a alcanzar tan solo noventa centímetros de alto.
-          </p>
-        </Prose>
       </section>
 
       {/* ═══ ELEPHANT SLIDER ═══ */}
       <SectionTitle>El elefante enano de Malta</SectionTitle>
-      <div style={{ paddingBottom: 8 }} />
-      <ElephantSlider />
+      <section style={{ ...CONTAINER, paddingBottom: 8 }}>
+        <ElephantSlider />
+      </section>
 
-      <section style={{ padding: "40px 0" }}>
-        <Prose>
-          <p>
-            Si en la isla de Malta habitaron este tipo de especies, es porque las condiciones de vida serían mucho mejores que las actuales: habría vegetación, animales y, lo que es más importante, agua en abundancia. En el territorio actual encontramos lechos con sedimentos y cantos rodados, que nos confirman la anterior presencia de ríos. Un panorama muy diferente al de hoy en día.
-          </p>
-          <p style={{ marginTop: 20 }}>
-            Si esa situación se mantuvo en el tiempo, haría lógica la hipótesis de que el archipiélago maltés resultase atractivo para la vida humana. Aquella población, de la que se sabe que habitó en cuevas y grutas, comenzaría a erigir inmensos templos megalíticos un milenio y medio después, durante un período que duraría aproximadamente hasta 2500 a.C. En ese momento, desaparece todo vestigio humano hasta la llegada de nuevos pobladores en la Edad del Bronce.
-          </p>
-        </Prose>
+      <section style={{ ...CONTAINER, padding: "32px 24px 40px" }}>
+        <InfoCard title="Un paisaje muy diferente">
+          <p style={{ margin: 0 }}>Si en Malta habitaron estas especies, las condiciones de vida serían mucho mejores: vegetación, animales y agua en abundancia. Hoy encontramos lechos con sedimentos y cantos rodados que confirman la antigua presencia de ríos.</p>
+        </InfoCard>
+
+        <InfoCard title="Los primeros pobladores">
+          <p style={{ margin: 0 }}>Aquella población, que habitó en cuevas y grutas, comenzó a erigir inmensos templos megalíticos un milenio y medio después. El período constructor duró hasta aproximadamente 2500 a.C., momento en que desaparece todo vestigio humano hasta la llegada de nuevos pobladores en la Edad del Bronce.</p>
+        </InfoCard>
       </section>
 
       {/* ═══ MEGALITHIC CULTURE ═══ */}
       <SectionTitle>La cultura megalítica de Malta</SectionTitle>
-      <section style={{ padding: "12px 0 20px" }}>
-        <Prose>
-          <p>
-            El primer templo megalítico conocido en Malta es Ta' Ħaġrat, que se ha datado en torno a 4500 a.C., lo cual lo convierte en el más antiguo de Europa, muy anterior a Stonehenge (2500 a.C.). Los megalitos aún en pie más antiguos de Occidente se hallan en la segunda isla del archipiélago, Gozo, y son los de Ġgantija, en la localidad de Xaghra. Datan de 3600 a.C. y presentan ya la forma característica de los recintos malteses: se disponen en planta trilobulada, con una puerta adintelada que da acceso al conjunto.
-          </p>
-        </Prose>
+      <section style={{ ...CONTAINER, padding: "12px 24px 20px" }}>
+        <InfoCard title="Ta' Ħaġrat: el templo más antiguo de Europa" accent>
+          <p style={{ margin: 0 }}>Datado en torno a 4500 a.C., es muy anterior a Stonehenge (2500 a.C.). Los megalitos aún en pie más antiguos de Occidente están en Gozo: los de Ġgantija (3600 a.C.), con la característica planta trilobulada y puerta adintelada de los recintos malteses.</p>
+        </InfoCard>
+
+        <InfoCard title="Una cultura única">
+          <p style={{ margin: 0 }}>Esa estructura tan característica es propia de este archipiélago y no la encontramos en ningún otro vestigio prehistórico. Las piedras — moles de hasta veinte toneladas — fueron transportadas desde la cantera hasta su emplazamiento último por medios aún desconocidos.</p>
+        </InfoCard>
+
         <Pullquote>
-          «Estamos hablando, por tanto, de una cultura lítica única, sin ninguna relación con las hasta ahora conocidas»
+          «Estamos ante una cultura lítica única, sin ninguna relación con las hasta ahora conocidas»
         </Pullquote>
-        <Prose>
-          <p>
-            Esa estructura tan característica es propia de este archipiélago y no la encontramos en ningún otro vestigio prehistórico. Al igual que en otros monumentos de este tipo, nos encontramos con la pregunta de cómo transportaron aquellos hombres las piedras — moles que llegan hasta las veinte toneladas de peso — desde la cantera hasta su emplazamiento último.
-          </p>
-        </Prose>
       </section>
 
       {/* ═══ INTERACTIVE MAP ═══ */}
       <SectionTitle>Los templos del archipiélago</SectionTitle>
-      <div style={{ paddingBottom: 8 }} />
-      <MaltaMap />
+      <section style={{ ...CONTAINER, paddingBottom: 8 }}>
+        <MaltaMap />
+      </section>
 
       {/* ═══ HAGAR QIM & MNAJDRA ═══ */}
       <SectionTitle>Los templos de Ħagar Qim y Mnajdra</SectionTitle>
-      <section style={{ padding: "12px 0 20px" }}>
-        <Prose>
-          <p>
-            Quizá los templos más enigmáticos de Malta sean los de Ħagar Qim y Mnajdra. Allí encontramos el enigma de su posible orientación en función del sol, de acuerdo con solsticios y equinoccios. La primera evidencia del conocimiento astronómico la tenemos en el templo sur de Mnajdra, donde, en los solsticios y equinoccios, hallamos una sorprendente alineación del corredor de entrada con la incidencia de los rayos del sol al amanecer.
-          </p>
-          <p style={{ marginTop: 20 }}>
-            En los equinoccios de primavera y otoño, el sol se ve al alba totalmente alineado con el centro del pasillo de entrada al templo. En el solsticio de invierno, los rayos de sol inciden justamente en un panel decorado a la derecha del corredor de entrada, mientras que en el solsticio de verano inciden en otro panel similar colocado a la izquierda.
-          </p>
-          <p style={{ marginTop: 20 }}>
-            En el templo de Ħagar Qim, durante el solsticio de verano, un rayo de luz penetra por un agujero elíptico en la pared de uno de los ábsides. La luz se proyecta como una luna creciente sobre la piedra y, según avanza el día, la figura va bajando por la pared y su tamaño va creciendo hasta alcanzar la forma de un disco completo al llegar al suelo.
-          </p>
-        </Prose>
+      <section style={{ ...CONTAINER, padding: "12px 24px 20px" }}>
+        <InfoCard title="Alineación solar en Mnajdra" accent>
+          <p style={{ margin: 0 }}>En el templo sur de Mnajdra, durante los solsticios y equinoccios, existe una sorprendente alineación del corredor de entrada con la incidencia de los rayos del sol al amanecer.</p>
+        </InfoCard>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <InfoCard title="Equinoccios">
+            <p style={{ margin: 0 }}>En primavera y otoño, el sol al alba se alinea totalmente con el centro del pasillo de entrada al templo.</p>
+          </InfoCard>
+          <InfoCard title="Solsticios">
+            <p style={{ margin: 0 }}>En invierno, los rayos inciden en un panel decorado a la derecha del corredor. En verano, en otro panel a la izquierda.</p>
+          </InfoCard>
+        </div>
+
+        <InfoCard title="El fenómeno de Ħagar Qim">
+          <p style={{ margin: 0 }}>Durante el solsticio de verano, un rayo de luz penetra por un agujero elíptico en la pared de uno de los ábsides. La luz se proyecta como una luna creciente sobre la piedra y, según avanza el día, va bajando y creciendo hasta alcanzar la forma de un disco completo al llegar al suelo.</p>
+        </InfoCard>
       </section>
 
       {/* ═══ SOLAR DIAGRAM ═══ */}
       <SectionTitle>Arqueoastronomía</SectionTitle>
-      <div style={{ background: "#fff", padding: 32, maxWidth: 900, margin: "0 auto" }}>
-        <img src={diagrama} alt="Planta del complejo de Mnajdra" style={{ width: "100%", display: "block" }} loading="lazy" />
-      </div>
-      <p style={{
-        fontFamily: S.body, fontSize: 11, color: "#666", textAlign: "center",
-        fontStyle: "italic", padding: "16px 24px 8px", maxWidth: 700, margin: "0 auto", lineHeight: 1.6,
-      }}>
-        Planta del complejo de Mnajdra con acimutes de incidencia solar — solsticio de invierno (SR WinSol), equinoccios (SR EQ) y solsticio de verano (SR SumSol)
-      </p>
+      <section style={{ ...CONTAINER }}>
+        <div style={{ background: "#fff", padding: 32, borderRadius: 4 }}>
+          <img src={diagrama} alt="Planta del complejo de Mnajdra" style={{ width: "100%", display: "block" }} loading="lazy" />
+        </div>
+        <p style={{
+          fontFamily: S.body, fontSize: 11, color: "#666", textAlign: "center",
+          fontStyle: "italic", padding: "16px 0 8px", maxWidth: 700, margin: "0 auto", lineHeight: 1.6,
+        }}>
+          Planta del complejo de Mnajdra con acimutes de incidencia solar — solsticio de invierno (SR WinSol), equinoccios (SR EQ) y solsticio de verano (SR SumSol)
+        </p>
+      </section>
 
-      <section style={{ padding: "32px 0 20px" }}>
-        <Prose>
-          <p>
-            ¿Cómo lograron esa precisión en sus edificaciones? En el Museo Arqueológico Nacional encontramos pequeñas tallas de edificios hechos a escala; también se pueden observar en algunos monumentos dibujos de templos grabados en la roca. Estamos, pues, ante una cultura que planificaba sus construcciones. ¿Podría tratarse de los primeros arquitectos de la historia?
-          </p>
-          <p style={{ marginTop: 20 }}>
-            Uno de los restos hallados en el templo de Tal-Qadi es una piedra tallada con una luna en cuarto creciente y ocho estrellas, entre las cuales se trazan diversas líneas que las dividen en sectores. Además, en Ħagar Qim se ha encontrado lo que parece ser una rueda solar.
-          </p>
-        </Prose>
+      <section style={{ ...CONTAINER, padding: "24px 24px 20px" }}>
+        <InfoCard title="Los primeros arquitectos">
+          <p style={{ margin: 0 }}>En el Museo Arqueológico Nacional se exhiben pequeñas tallas de edificios hechos a escala. En algunos monumentos se observan dibujos de templos grabados en la roca. Estamos ante una cultura que planificaba sus construcciones.</p>
+        </InfoCard>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <InfoCard title="La piedra de Tal-Qadi" accent>
+            <p style={{ margin: 0 }}>Una piedra tallada con una luna en cuarto creciente y ocho estrellas, con líneas que las dividen en sectores. Posible carta celeste.</p>
+          </InfoCard>
+          <InfoCard title="Rueda solar de Ħagar Qim" accent>
+            <p style={{ margin: 0 }}>Se ha encontrado lo que parece ser una rueda solar, prueba adicional de sus conocimientos astronómicos.</p>
+          </InfoCard>
+        </div>
+
         <Pullquote>
-          «No cabe, pues, ninguna duda de que este pueblo de constructores observaba y medía el movimiento de los astros»
+          «No cabe ninguna duda de que este pueblo de constructores observaba y medía el movimiento de los astros»
         </Pullquote>
       </section>
 
       {/* ═══ MORE ENIGMAS ═══ */}
       <SectionTitle>Más enigmas por resolver</SectionTitle>
-      <section style={{ padding: "12px 0 20px" }}>
-        <Prose>
-          <p>
-            Las incógnitas en torno a esta cultura que habitó Malta entre 6000 y 2500 a.C. no acaban aquí. Uno de los vestigios arqueológicos más intrigantes del planeta son los <em>cart ruts</em>: una serie de líneas excavadas en el suelo que recorren toda la isla como hileras distribuidas de dos en dos. Algunas de ellas se cruzan entre sí y, a veces, acaban al borde de acantilados o sumergiéndose en el mar.
-          </p>
-          <p style={{ marginTop: 20 }}>
-            Otro de los hitos arqueológicos de la isla es el hipogeo de Hal Saflieni: el único templo prehistórico subterráneo conocido. Se han encontrado restos de cerámica fechados en 4000 a.C. Se calcula que se debió tardar en vaciar la roca unos mil quinientos años. Tiene tres niveles de profundidad. En el segundo encontramos diversas salas como la llamada del Oráculo y la <em>Sancta Sanctorum</em>.
-          </p>
-        </Prose>
+      <section style={{ ...CONTAINER, padding: "12px 24px 20px" }}>
+        <InfoCard title="Los cart ruts" accent>
+          <p style={{ margin: 0 }}>Líneas excavadas en el suelo que recorren toda la isla, distribuidas de dos en dos. Algunas se cruzan entre sí y, a veces, acaban al borde de acantilados o sumergiéndose en el mar. Su origen y propósito siguen siendo un misterio.</p>
+        </InfoCard>
+
+        <InfoCard title="El hipogeo de Hal Saflieni" accent>
+          <p style={{ margin: 0 }}>El único templo prehistórico subterráneo conocido. Restos de cerámica fechados en 4000 a.C. Se calcula que tardaron mil quinientos años en vaciar la roca. Tiene tres niveles de profundidad, con salas como la del Oráculo y la <em style={{ color: "#aaa" }}>Sancta Sanctorum</em>.</p>
+        </InfoCard>
       </section>
 
       {/* ═══ CONCLUSION ═══ */}
       <SectionTitle>Conclusión</SectionTitle>
-      <section style={{ padding: "12px 0 48px" }}>
-        <Prose>
-          <p>
-            El archipiélago maltés acogió una cultura sin parangón en Occidente en todo el período prehistórico. Las evidencias arqueológicas nos muestran su capacidad constructiva, sus conocimientos astronómicos y su manejo de tecnologías que escapan a nuestro entendimiento. Malta es, sin lugar a dudas, un centro arqueológico de primer orden y, a buen seguro, las futuras investigaciones arrojarán nueva luz sobre esta civilización megalítica tan avanzada. De momento, quedan numerosas incógnitas por resolver, tanto por su capacidad tecnológica como por su desaparición, sin dejar rastro, hace unos cuatro mil quinientos años.
-          </p>
-        </Prose>
+      <section style={{ ...CONTAINER, padding: "12px 24px 48px" }}>
+        <InfoCard>
+          <p style={{ margin: 0 }}>El archipiélago maltés acogió una cultura sin parangón en Occidente durante todo el período prehistórico. Las evidencias arqueológicas muestran su capacidad constructiva, sus conocimientos astronómicos y su manejo de tecnologías que escapan a nuestro entendimiento. Malta es un centro arqueológico de primer orden y, a buen seguro, las futuras investigaciones arrojarán nueva luz sobre esta civilización que desapareció sin dejar rastro hace unos cuatro mil quinientos años.</p>
+        </InfoCard>
       </section>
 
       {/* ═══ FOOTER ═══ */}
