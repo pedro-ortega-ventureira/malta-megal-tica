@@ -89,7 +89,7 @@ function InfoCard({ title, children, accent }: { title?: string; children: React
 }
 
 /* ── Lightbox with pan & zoom ── */
-function Lightbox({ src, name, date, desc, onClose }: { src: string; name: string; date: string; desc: string; onClose: () => void }) {
+function Lightbox({ src, name, date, desc, onClose, onPrev, onNext }: { src: string; name: string; date: string; desc: string; onClose: () => void; onPrev?: () => void; onNext?: () => void }) {
   const [scale, setScale] = useState(1);
   const [translate, setTranslate] = useState({ x: 0, y: 0 });
   const dragging = useRef(false);
