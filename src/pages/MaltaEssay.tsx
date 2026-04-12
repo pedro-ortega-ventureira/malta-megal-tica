@@ -239,7 +239,7 @@ function MaltaMap() {
       L.marker([m.lat, m.lng], { icon }).addTo(map).bindPopup(popup);
     });
 
-    return () => { map.remove(); };
+    return () => { cleanup(); map.remove(); };
   }, []);
 
   return <div ref={mapRef} style={{ width: "100%", height: 480, borderRadius: 4 }} />;
