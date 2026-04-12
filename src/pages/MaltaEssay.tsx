@@ -275,7 +275,80 @@ export default function MaltaEssay() {
         </Pullquote>
       </section>
 
-      {/* ═══ ELEPHANT SLIDER ═══ */}
+      {/* ═══ MEDITERRANEAN SEA LEVEL ═══ */}
+      <section style={{ background: "#0a1628", padding: "64px 0", marginTop: 8 }}>
+        <div style={{ textAlign: "center", padding: "0 24px", marginBottom: 40 }}>
+          <h2 style={{ fontFamily: S.heading, fontSize: "2rem", fontWeight: 300, color: "#fff", margin: "0 0 14px", letterSpacing: "0.03em" }}>
+            El Mediterráneo que no vemos
+          </h2>
+          <p style={{ fontFamily: S.body, fontSize: 14, color: "#6b8ab5", maxWidth: 600, margin: "0 auto", lineHeight: 1.7 }}>
+            Hace 20.000 años el nivel del mar estaba 120 metros más bajo. Malta era una península unida a Sicilia.
+          </p>
+        </div>
+
+        <div style={{ ...CONTAINER, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
+          {/* Left — Image */}
+          <div>
+            <img
+              src={mediterraneoGlacial}
+              alt="Mediterráneo durante el último máximo glacial"
+              style={{ width: "100%", borderRadius: 4, border: "1px solid #1a2a44", display: "block" }}
+            />
+            <p style={{ fontFamily: S.body, fontSize: 10, color: "#4a6a8a", marginTop: 10, lineHeight: 1.6, fontStyle: "italic" }}>
+              Recreación del Mediterráneo durante el último máximo glacial. Las zonas ocres eran tierra firme.
+            </p>
+          </div>
+
+          {/* Right — Chart */}
+          <div style={{ background: "#0d1b30", border: "1px solid #1a2a44", borderRadius: 4, padding: "20px 16px 12px" }}>
+            <p style={{ fontFamily: S.body, fontSize: 11, color: "#6b8ab5", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 16, textAlign: "center" }}>
+              Nivel del mar — últimos 22.000 años
+            </p>
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={SEA_LEVEL_DATA} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
+                <defs>
+                  <linearGradient id="seaFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#cc2222" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="#cc2222" stopOpacity={0.02} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#1a2a44" />
+                <ReferenceArea x1="20000 a.C." x2="7000 a.C." fill="#1a3a5a" fillOpacity={0.3} />
+                <ReferenceLine y={0} stroke="#4a6a8a" strokeDasharray="6 4" label={{ value: "nivel actual", fill: "#6b8ab5", fontSize: 10, position: "right" }} />
+                <XAxis dataKey="year" tick={{ fill: "#4a6a8a", fontSize: 9 }} axisLine={{ stroke: "#1a2a44" }} tickLine={false} interval={3} />
+                <YAxis tick={{ fill: "#4a6a8a", fontSize: 10 }} axisLine={{ stroke: "#1a2a44" }} tickLine={false} unit=" m" domain={[-130, 10]} />
+                <Tooltip
+                  contentStyle={{ background: "#0d1b30", border: "1px solid #1a2a44", borderRadius: 3, fontFamily: S.body, fontSize: 12 }}
+                  labelStyle={{ color: "#6b8ab5" }}
+                  itemStyle={{ color: "#cc2222" }}
+                  formatter={(value: number) => [`${value} m`, "Nivel"]}
+                />
+                <Area type="monotone" dataKey="level" stroke="#cc2222" strokeWidth={2} fill="url(#seaFill)" dot={false} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Fact cards */}
+        <div style={{ ...CONTAINER, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginTop: 32 }}>
+          {[
+            { stat: "−120 m", desc: "Nivel en el último máximo glacial (20.000 a.C.)", icon: "▼" },
+            { stat: "Malta–Sicilia", desc: "Estaban unidas por tierra firme", icon: "◆" },
+            { stat: "+20 cm", desc: "Subida del nivel del mar desde 1900", icon: "▲" },
+          ].map((c, i) => (
+            <div key={i} style={{
+              background: "#0d1b30", border: "1px solid #1a2a44", borderRadius: 3,
+              padding: "24px 20px", textAlign: "center",
+            }}>
+              <div style={{ fontSize: 20, color: "#cc2222", marginBottom: 8 }}>{c.icon}</div>
+              <div style={{ fontFamily: S.heading, fontSize: "1.3rem", color: "#fff", fontWeight: 300, marginBottom: 8 }}>{c.stat}</div>
+              <div style={{ fontFamily: S.body, fontSize: 11, color: "#6b8ab5", lineHeight: 1.5 }}>{c.desc}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+
       <SectionTitle>El elefante enano de Malta</SectionTitle>
       <section style={{ ...CONTAINER, paddingBottom: 8 }}>
         <ElephantSlider />
